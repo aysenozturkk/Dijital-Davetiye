@@ -118,10 +118,16 @@ document.querySelectorAll("[data-calendar]").forEach((button) => {
       "END:VCALENDAR"
     ].join("\r\n");
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(new Blob([calendar], { type: "text/calendar;charset=utf-8" }));
+    const calendarUrl = URL.createObjectURL(new Blob([calendar], { type: "text/calendar;charset=utf-8" }));
+    link.href = calendarUrl;
     link.download = event.file;
+    link.hidden = true;
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(link.href);
+    window.setTimeout(() => {
+      link.remove();
+      URL.revokeObjectURL(calendarUrl);
+    }, 1000);
     showToast("Takvim dosyası hazırlandı.");
   });
 });
