@@ -67,3 +67,111 @@ h1 i{color:#767c76}
   .hero-message{font-size:1.12rem}
   .event-card{padding:34px 23px}
 }
+
+/* Calm, high-legibility presentation */
+:root{--surface:#fbfaf7;--surface-low:#f4f2ed;--ink:#20221f;--muted:#515650;--soft:#686d68;--sage:#4d5b50;--line:#c8cac5}
+body{line-height:1.6;background:var(--surface)}
+.paper-grain,.hero-ornament,.note-ornament,.leaf-mark{display:none}
+.site-header{background:rgba(251,250,247,.97);backdrop-filter:none}
+.desktop-nav{gap:40px}
+.hero{min-height:92svh;background-image:linear-gradient(rgba(251,250,247,.84),rgba(251,250,247,.88)),url("assets/wedding-hero.webp");background-position:center;background-size:cover}
+.hero::before,.hero::after{display:none}
+.hero-inner{max-width:780px;padding:52px 72px;background:rgba(251,250,247,.88);border:1px solid rgba(200,202,197,.7);box-shadow:none;backdrop-filter:none}
+.overline{margin-bottom:24px;font-size:.78rem;letter-spacing:.18em}
+h1{gap:32px;font-size:clamp(4rem,9vw,7.4rem);line-height:1;text-shadow:none}
+h1 i{color:#858a85}
+.hero-rule{height:52px;margin:32px auto 25px}
+.hero-message{max-width:570px;color:var(--ink);font-size:1.28rem;font-weight:400;line-height:1.65}
+.scroll-indicator{display:none}
+.section{padding-block:108px}
+.section-intro{margin-bottom:58px}
+.section-intro h2,.rsvp-card h2,.dialog-top h2,.success-state h2{font-size:clamp(2.5rem,4.5vw,4rem);line-height:1.15}
+.event-grid{gap:24px}
+.event-card{padding:42px;background:var(--surface);box-shadow:none}
+.event-card:hover{transform:none;box-shadow:none}
+.event-card h3{margin-bottom:34px}
+.event-details{gap:24px}
+.event-details p{color:#3e433e;font-size:1.02rem;line-height:1.7}
+.families{background:var(--surface-low)}
+.family-grid{gap:34px}
+.invitation-note{background:var(--surface)}
+.invitation-note blockquote{max-width:880px;margin-inline:auto;font-size:clamp(2rem,4vw,3.8rem);font-weight:400;line-height:1.3}
+.countdown-section{padding-block:74px;background:#292b28}
+.countdown strong{font-size:clamp(2.6rem,5vw,4.1rem)}
+.rsvp-card{padding:64px;border-color:var(--line);box-shadow:none}
+.rsvp-dialog{background:var(--surface)}
+.conditional-fields:not([hidden]){grid-template-columns:1fr}
+.event-options{grid-column:auto}
+.reveal{transform:translateY(10px);transition-duration:.65s}
+
+@media(max-width:800px){
+  .section{padding-block:82px}
+  .hero{min-height:88svh;background-image:linear-gradient(rgba(251,250,247,.9),rgba(251,250,247,.92)),url("assets/wedding-hero.webp")}
+  .hero-inner{width:min(100%,580px);padding:42px 28px}
+  h1{gap:0}
+  .event-card{padding:34px 28px}
+  .family-grid{gap:26px}
+}
+@media(max-width:520px){
+  .site-header{padding-inline:18px}
+  .header-rsvp{min-height:40px;padding-inline:12px;letter-spacing:.1em}
+  .hero{min-height:84svh;padding-inline:16px}
+  .hero-inner{padding:36px 18px}
+  h1{font-size:clamp(3.8rem,19vw,5.5rem)}
+  .hero-message{font-size:1.08rem}
+  .hero-action{margin-top:28px}
+  .section-intro h2{font-size:2.65rem}
+  .event-card{padding:30px 22px}
+  .event-actions{align-items:flex-start;flex-direction:column;gap:14px}
+  .invitation-note blockquote{font-size:2rem}
+  .rsvp-card{padding:52px 24px}
+}
+
+/* Highly readable typography */
+:root{--serif:"Lora",Georgia,serif;--sans:"Source Sans 3","Segoe UI",Arial,sans-serif}
+body{font-family:var(--sans);font-size:17px}
+.brand,h1,.section-intro h2,.event-card h3,.family p,.family-monogram,.invitation-note blockquote,.countdown strong,.rsvp-card h2,.dialog-top h2,.success-state h2,.footer-name{font-family:var(--serif)}
+h1{font-weight:500;letter-spacing:-.035em}
+h1 i{font-family:var(--serif)}
+.hero-message{font-family:var(--serif);font-weight:400}
+.desktop-nav a,.outline-button,.solid-button,.text-link,.overline,.event-day,.event-details span,.family span,.footer-links button{letter-spacing:.08em}
+.event-details p{font-size:1.08rem}
+.event-details span{font-size:.78rem}
+.family span{font-size:.78rem}
+.rsvp-card>p:not(.overline,.saved-response){font-size:1.08rem}
+.rsvp-dialog label,.rsvp-dialog legend{font-size:.8rem}
+
+@media(max-width:520px){
+  body{font-size:16px}
+  h1{font-size:clamp(3.4rem,17vw,5rem);line-height:1.05}
+  .hero-message{font-size:1.08rem}
+}
+
+/* Restrained decorative details */
+.event-card{position:relative;overflow:hidden}
+.event-icon{position:absolute;top:32px;right:34px;width:62px;height:62px;display:grid;place-items:center;border:1px solid #d4d6d1;border-radius:50%;color:#69736a;background:#f8f7f3}
+.event-icon svg{width:31px;height:31px;fill:none;stroke:currentColor;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+.event-card .event-day,.event-card h3{padding-right:76px}
+.families{position:relative;overflow:hidden}
+.families>.shell{position:relative;z-index:2}
+.families-botanical{position:absolute;z-index:1;top:50%;width:250px;height:380px;opacity:.075;transform:translateY(-50%)}
+.families-botanical::before{content:"";position:absolute;left:50%;bottom:0;width:1px;height:100%;background:var(--sage);transform:rotate(12deg)}
+.families-botanical span{position:absolute;width:92px;height:38px;border:1px solid var(--sage);border-radius:100% 0 100% 0}
+.families-botanical span:nth-child(1){top:38px;left:33px;transform:rotate(28deg)}
+.families-botanical span:nth-child(2){top:125px;right:22px;transform:scaleX(-1) rotate(24deg)}
+.families-botanical span:nth-child(3){top:218px;left:38px;transform:rotate(30deg)}
+.families-botanical span:nth-child(4){top:292px;right:28px;transform:scaleX(-1) rotate(28deg)}
+.botanical-left{left:-74px}.botanical-right{right:-74px;transform:translateY(-50%) scaleX(-1)}
+.rsvp-seal{width:86px;height:86px;margin:0 auto 34px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:50%;color:var(--sage);font-family:var(--serif);font-size:1.1rem}
+.rsvp-seal i{color:var(--soft);font-size:.8rem}
+
+@media(max-width:800px){
+  .families-botanical{width:170px;height:300px;opacity:.055}
+  .botanical-left{left:-100px}.botanical-right{right:-100px}
+}
+@media(max-width:520px){
+  .event-icon{top:25px;right:22px;width:52px;height:52px}
+  .event-icon svg{width:26px;height:26px}
+  .event-card .event-day,.event-card h3{padding-right:58px}
+  .families-botanical{display:none}
+}
