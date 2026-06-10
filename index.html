@@ -8,7 +8,7 @@
   <title>Ayşen & Saltuk | 21–22 Ağustos 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
@@ -44,6 +44,12 @@
       </header>
       <div class="event-grid">
         <article class="event-card reveal" id="kina">
+          <div class="event-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M24 7v5M14.5 10.5l3.5 4M33.5 10.5l-3.5 4M11 21h26M14 21v16h20V21"/>
+              <path d="M19 21c0-3 2-5 5-5s5 2 5 5M19 29h10M24 21v16"/>
+            </svg>
+          </div>
           <p class="event-day">Cuma · Sakarya</p>
           <h3>Kına Gecesi</h3>
           <div class="event-details">
@@ -56,6 +62,12 @@
           </div>
         </article>
         <article class="event-card reveal delay-1" id="dugun">
+          <div class="event-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <circle cx="20" cy="24" r="10"/><circle cx="29" cy="24" r="10"/>
+              <path d="M20 14l4-6 5 6M13 34l-3 5M36 34l3 5"/>
+            </svg>
+          </div>
           <p class="event-day">Cumartesi · Ankara</p>
           <h3>Düğün</h3>
           <div class="event-details">
@@ -71,6 +83,12 @@
     </section>
 
     <section class="families section" id="aileler">
+      <div class="families-botanical botanical-left" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="families-botanical botanical-right" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
       <div class="shell">
         <header class="section-intro centered reveal"><p class="overline">Ailelerimiz</p><div class="small-rule"></div></header>
         <div class="family-grid reveal">
@@ -103,6 +121,7 @@
 
     <section class="rsvp-section section" id="lcv">
       <div class="rsvp-card reveal">
+        <div class="rsvp-seal" aria-hidden="true"><span>A</span><i>&</i><span>S</span></div>
         <div class="leaf-mark" aria-hidden="true"><span></span><span></span><span></span></div>
         <p class="overline">Lütfen cevap veriniz</p>
         <h2>Katılım Bildir</h2>
@@ -151,7 +170,6 @@
           <label class="choice"><input type="checkbox" name="eventWedding" value="yes"><span>Düğün</span></label>
         </fieldset>
         <label>Kişi sayısı<select name="guests"><option value="1">1 kişi</option><option value="2">2 kişi</option><option value="3">3 kişi</option><option value="4">4 kişi</option></select></label>
-        <label>Beslenme tercihi<select name="meal"><option value="standard">Standart menü</option><option value="vegetarian">Vejetaryen</option><option value="vegan">Vegan</option></select></label>
       </div>
       <label>Mesajınız <span class="optional">(isteğe bağlı)</span><textarea name="message" rows="3" placeholder="Güzel dileklerinizi paylaşın"></textarea></label>
       <button class="solid-button form-submit" type="submit">Yanıtımı gönder</button>
