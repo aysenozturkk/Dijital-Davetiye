@@ -1,4 +1,5 @@
 const EVENT_DATE = new Date("2026-08-21T19:00:00+03:00");
+
 const dialog = document.querySelector("#rsvpDialog");
 const form = document.querySelector("#rsvpForm");
 const successState = document.querySelector("#successState");
@@ -14,10 +15,30 @@ function showToast(message) {
   showToast.timeout = window.setTimeout(() => toast.classList.remove("visible"), 2800);
 }
 
+function syncConditionalFields() {
+  const attendance = form.elements.attendance.value;
+  conditionalFields.hidden = attendance !== "yes";
+}
+
+function updateFormProgress() {
+  const controls = Array.from(form.querySelectorAll("input, select, textarea")).filter((control) => {
+    if (conditionalFields.hidden && conditionalFields.contains(control)) return false;
+    return control.type !== "checkbox" || control.checked;
+  });
+  const completed = controls.filter((control) => {
+    if (control.type === "radio") return control.checked;
+    if (control.type === "checkbox") return true;
+    return control.value.trim().length > 0;
+  }).length;
+  formProgress.style.width = `${Math.min(100, (completed / Math.max(controls.length, 1)) * 100)}%`;
+}
+
 document.querySelectorAll("[data-open-rsvp]").forEach((button) => {
   button.addEventListener("click", () => {
     form.hidden = false;
     successState.hidden = true;
+    syncConditionalFields();
+    updateFormProgress();
     dialog.showModal();
   });
 });
@@ -32,18 +53,10 @@ dialog.addEventListener("click", (event) => {
 
 Array.from(form.elements.attendance).forEach((radio) => {
   radio.addEventListener("change", () => {
-    conditionalFields.hidden = radio.value !== "yes";
+    syncConditionalFields();
+    updateFormProgress();
   });
 });
-
-function updateFormProgress() {
-  const controls = Array.from(form.querySelectorAll("input, select, textarea"));
-  const completed = controls.filter((control) => {
-    if (control.type === "radio" || control.type === "checkbox") return control.checked;
-    return control.value.trim().length > 0;
-  }).length;
-  formProgress.style.width = `${Math.min(100, (completed / controls.length) * 100)}%`;
-}
 
 form.addEventListener("input", updateFormProgress);
 form.addEventListener("change", updateFormProgress);
@@ -108,7 +121,7 @@ document.querySelectorAll("[data-calendar]").forEach((button) => {
       "PRODID:-//Aysen ve Saltuk//Davetiyesi//TR",
       "BEGIN:VEVENT",
       `UID:aysen-saltuk-${button.dataset.calendar}-2026@example.com`,
-      "DTSTAMP:20260610T120000Z",
+      "DTSTAMP:20260707T120000Z",
       `DTSTART:${event.start}`,
       `DTEND:${event.end}`,
       `SUMMARY:${event.summary}`,
@@ -134,7 +147,7 @@ document.querySelectorAll("[data-calendar]").forEach((button) => {
 
 document.querySelector("#shareButton").addEventListener("click", async () => {
   const shareData = {
-    title: "Ayşen & Saltuk | 21–22 Ağustos 2026",
+    title: "Ayşen & Saltuk | 21-22 Ağustos 2026",
     text: "Ayşen ve Saltuk'un kına ve düğün davetiyesi",
     url: window.location.href
   };
