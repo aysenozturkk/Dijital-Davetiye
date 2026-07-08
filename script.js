@@ -7,6 +7,8 @@ const conditionalFields = document.querySelector("#conditionalFields");
 const savedResponse = document.querySelector("#savedResponse");
 const toast = document.querySelector("#toast");
 const formProgress = document.querySelector("#formProgress");
+const RSVP_STORAGE_KEY = "aysen-saltuk-rsvp";
+const RSVP_WHATSAPP_NUMBER = "905365825495";
 
 function showToast(message) {
   toast.textContent = message;
@@ -18,6 +20,36 @@ function showToast(message) {
 function syncConditionalFields() {
   const attendance = form.elements.attendance.value;
   conditionalFields.hidden = attendance !== "yes";
+}
+
+function getSelectedEvents(data) {
+  return [
+    data.eventHenna ? "kına gecesi" : "",
+    data.eventWedding ? "düğün" : ""
+  ].filter(Boolean);
+}
+
+function composeRsvpMessage(data) {
+  const attending = data.attendance === "yes";
+  const lines = [
+    "Merhaba Ayşen & Saltuk Buğrahan,",
+    "",
+    `LCV yanıtım: ${attending ? "Katılıyorum" : "Katılamıyorum"}`,
+    `Ad soyad: ${data.name}`
+  ];
+
+  if (attending) {
+    const selectedEvents = getSelectedEvents(data);
+    lines.push(`Etkinlik: ${selectedEvents.join(" ve ")}`);
+    lines.push(`Kişi sayısı: ${data.guests || 1}`);
+  }
+
+  if (data.message) {
+    lines.push("");
+    lines.push(`Mesaj: ${data.message}`);
+  }
+
+  return lines.join("\n");
 }
 
 function updateFormProgress() {
@@ -64,19 +96,26 @@ form.addEventListener("change", updateFormProgress);
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = Object.fromEntries(new FormData(form));
-  localStorage.setItem("aysen-saltuk-rsvp", JSON.stringify(data));
+  if (data.attendance === "yes" && !data.eventHenna && !data.eventWedding) {
+    showToast("Lütfen katılacağınız etkinliği seçin.");
+    conditionalFields.querySelector("input").focus();
+    return;
+  }
+
+  localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(data));
+  const whatsappUrl = `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${encodeURIComponent(composeRsvpMessage(data))}`;
+  const whatsappWindow = window.open(whatsappUrl, "_blank", "noopener");
+  if (!whatsappWindow) window.location.href = whatsappUrl;
   form.hidden = true;
   successState.hidden = false;
   updateSavedResponse(data);
+  showToast("WhatsApp mesajınız hazırlandı.");
 });
 
 function updateSavedResponse(data) {
   if (!data) return;
   const attending = data.attendance === "yes";
-  const selectedEvents = [
-    data.eventHenna ? "kına" : "",
-    data.eventWedding ? "düğün" : ""
-  ].filter(Boolean).join(" ve ");
+  const selectedEvents = getSelectedEvents(data).join(" ve ");
   savedResponse.hidden = false;
   savedResponse.textContent = attending
     ? `Yanıtınız kayıtlı: ${data.guests || 1} kişi${selectedEvents ? ` ${selectedEvents} programına` : ""} katılıyor.`
@@ -100,14 +139,14 @@ const events = {
     file: "aysen-saltuk-kina.ics",
     start: "20260821T160000Z",
     end: "20260821T200000Z",
-    summary: "Ayşen ve Saltuk - Kına Gecesi",
+    summary: "Ayşen ve Saltuk Buğrahan - Kına Gecesi",
     location: "Aşk-ı Ala Düğün Salonu Alt Kat, Hendek, Sakarya"
   },
   wedding: {
     file: "aysen-saltuk-dugun.ics",
     start: "20260822T160000Z",
     end: "20260822T200000Z",
-    summary: "Ayşen ve Saltuk - Düğün",
+    summary: "Ayşen ve Saltuk Buğrahan - Düğün",
     location: "Göksu Başkent Sosyal Tesisleri, Etimesgut, Ankara"
   }
 };
@@ -118,7 +157,7 @@ document.querySelectorAll("[data-calendar]").forEach((button) => {
     const calendar = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Aysen ve Saltuk//Davetiyesi//TR",
+      "PRODID:-//Aysen ve Saltuk Bugrahan//Davetiyesi//TR",
       "BEGIN:VEVENT",
       `UID:aysen-saltuk-${button.dataset.calendar}-2026@example.com`,
       "DTSTAMP:20260707T120000Z",
@@ -126,7 +165,7 @@ document.querySelectorAll("[data-calendar]").forEach((button) => {
       `DTEND:${event.end}`,
       `SUMMARY:${event.summary}`,
       `LOCATION:${event.location}`,
-      "DESCRIPTION:Ayşen ve Saltuk'un özel gününe davetlisiniz.",
+      "DESCRIPTION:Ayşen ve Saltuk Buğrahan'ın özel gününe davetlisiniz.",
       "END:VEVENT",
       "END:VCALENDAR"
     ].join("\r\n");
@@ -146,27 +185,40 @@ document.querySelectorAll("[data-calendar]").forEach((button) => {
 });
 
 document.querySelector("#shareButton").addEventListener("click", async () => {
+  const invitationText = [
+    "Sevgili ailemiz ve dostlarımız,",
+    "",
+    "Bu güzel yolculuğumuzun en özel günlerinde sizleri de yanımızda görmekten mutluluk duyarız.",
+    "",
+    "Kına gecemiz 21 Ağustos 2026 Cuma günü Sakarya Hendek'te, düğünümüz ise 22 Ağustos 2026 Cumartesi günü Ankara Etimesgut'ta olacak.",
+    "",
+    "Program detayları, yol tarifi, takvim ve LCV için davetiyemizi buradan inceleyebilirsiniz:",
+    window.location.href,
+    "",
+    "Sevgilerimizle,",
+    "Ayşen & Saltuk Buğrahan"
+  ].join("\n");
   const shareData = {
-    title: "Ayşen & Saltuk | 21-22 Ağustos 2026",
-    text: "Ayşen ve Saltuk'un kına ve düğün davetiyesi",
+    title: "Ayşen & Saltuk Buğrahan | 21-22 Ağustos 2026",
+    text: invitationText,
     url: window.location.href
   };
   try {
     if (navigator.share) {
       await navigator.share(shareData);
     } else {
-      await navigator.clipboard.writeText(window.location.href);
-      showToast("Davetiye bağlantısı kopyalandı.");
+      await navigator.clipboard.writeText(invitationText);
+      showToast("Davetiye mesajı kopyalandı.");
     }
   } catch (error) {
-    if (error.name !== "AbortError") showToast("Bağlantı kopyalanamadı.");
+    if (error.name !== "AbortError") showToast("Davetiye mesajı kopyalanamadı.");
   }
 });
 
 try {
-  updateSavedResponse(JSON.parse(localStorage.getItem("aysen-saltuk-rsvp")));
+  updateSavedResponse(JSON.parse(localStorage.getItem(RSVP_STORAGE_KEY)));
 } catch {
-  localStorage.removeItem("aysen-saltuk-rsvp");
+  localStorage.removeItem(RSVP_STORAGE_KEY);
 }
 
 const revealObserver = new IntersectionObserver((entries) => {
